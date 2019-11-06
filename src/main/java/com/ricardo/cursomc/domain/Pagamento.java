@@ -1,5 +1,6 @@
 package com.ricardo.cursomc.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.ricardo.cursomc.domain.enums.EstadoPagamento;
 import org.springframework.boot.autoconfigure.web.ResourceProperties;
 
@@ -18,6 +19,7 @@ public abstract class Pagamento implements Serializable {
 
     private Integer estado;
 
+    @JsonBackReference
     @OneToOne
     @JoinColumn(name = "pedido_id")
     @MapsId
