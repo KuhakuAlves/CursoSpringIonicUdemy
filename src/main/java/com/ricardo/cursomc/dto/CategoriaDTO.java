@@ -1,6 +1,8 @@
 package com.ricardo.cursomc.dto;
 
 import com.ricardo.cursomc.domain.Categoria;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import java.io.Serializable;
 
@@ -20,6 +22,8 @@ public class CategoriaDTO implements Serializable {
         this.id = id;
     }
 
+    @NotEmpty(message = "Preenchimento obrigátorio")
+    @Length(min = 5, max = 80, message = "O tamanho deve estar entre 5 e 80 caracteres")
     public String getNome() {
         return nome;
     }
