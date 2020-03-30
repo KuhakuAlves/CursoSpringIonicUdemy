@@ -1,20 +1,22 @@
 package com.ricardo.cursomc.domain;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.ricardo.cursomc.domain.enums.EstadoPagamento;
 
 import javax.persistence.Entity;
 
 @Entity
-public class PasgamentoComCartao extends Pagamento {
+@JsonTypeName("pagamentoComCartao")
+public class PagamentoComCartao extends Pagamento {
     private static final long serialVersionUID = 1L;
 
     private Integer numeroDeParcelas;
 
-    public PasgamentoComCartao(){
+    public PagamentoComCartao(){
 
     }
 
-    public PasgamentoComCartao(Integer id, EstadoPagamento estado, Pedido pedido, Integer numeroDeParcelas) {
+    public PagamentoComCartao(Integer id, EstadoPagamento estado, Pedido pedido, Integer numeroDeParcelas) {
         super(id, estado, pedido);
         this.numeroDeParcelas = numeroDeParcelas;
     }
