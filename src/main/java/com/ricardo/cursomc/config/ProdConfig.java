@@ -1,6 +1,8 @@
 package com.ricardo.cursomc.config;
 
 import com.ricardo.cursomc.services.DBService;
+import com.ricardo.cursomc.services.EmailService;
+import com.ricardo.cursomc.services.SmtpEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -26,5 +28,10 @@ public class ProdConfig {
         }
         dbService.instantiateTestDataBGase();
         return true;
+    }
+
+    @Bean
+    public EmailService emailService(){
+        return new SmtpEmailService();
     }
 }

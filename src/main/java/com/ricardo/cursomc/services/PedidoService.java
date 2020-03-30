@@ -46,13 +46,13 @@ public class PedidoService {
 
     public Pedido insert(Pedido obj){
         obj.setId(null);
-        obj.setInstance(new Date());
+        obj.setInstante(new Date());
         obj.setCliente(clienteRepository.findOne(obj.getCliente().getId()));
         obj.getPagamento().setEstado(EstadoPagamento.PENDETE);
         obj.getPagamento().setPedido(obj);
         if (obj.getPagamento() instanceof PagamentoComBoleto){
             PagamentoComBoleto pagtro = (PagamentoComBoleto) obj.getPagamento();
-            boletoService.preencherPagamentoComBoleto(pagtro, obj.getInstance());
+            boletoService.preencherPagamentoComBoleto(pagtro, obj.getInstante());
         }
         obj = pedidoRepository.save(obj);
         pagamentoRepository.save(obj.getPagamento());
@@ -63,7 +63,7 @@ public class PedidoService {
            ip.setPedido(obj);
         }
         itemPedidoRepository.save(obj.getItens());
-        emailService.sendOrderConfirmationEmail(obj);
+        emailService.sendOrderConfirmationHtmlEmail(obj);
         return obj;
     }
 }
