@@ -30,7 +30,6 @@ public class Cliente implements Serializable {
     private String senha;
 
 
-
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
     private List<Endereco> enderecos = new ArrayList<>();
 
@@ -131,6 +130,7 @@ public class Cliente implements Serializable {
     public void setSenha(String senha) {
         this.senha = senha;
     }
+
 
     public Set<Perfil> getPerfils(){
       return perfis.stream().map(x -> Perfil.toEnum(x)).collect(Collectors.toSet());
