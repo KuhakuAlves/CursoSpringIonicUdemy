@@ -1,5 +1,6 @@
 package com.ricardo.cursomc.resources.exceptions;
 
+import com.ricardo.cursomc.services.exceptions.AuthorizationException;
 import com.ricardo.cursomc.services.exceptions.DataIntegrityException;
 import com.ricardo.cursomc.services.exceptions.ObjectNotFoundException;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
@@ -34,5 +35,12 @@ public class ResourceExceptionHandler {
             validationError.addError(x.getField(), x.getDefaultMessage());
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(validationError);
+    }
+
+    @ExceptionHandler(AuthorizationException.class)
+    public ResponseEntity<StandardError> authorization(AuthorizationException ex, HttpServletRequest req){
+
+        StandardError standardError = new StandardError(HttpStatus.FORBIDDEN.value(), ex.getMessage(), System.currentTimeMillis());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(standardError);
     }
 }

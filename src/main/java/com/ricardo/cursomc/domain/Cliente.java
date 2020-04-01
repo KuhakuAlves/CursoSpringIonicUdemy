@@ -1,11 +1,13 @@
 package com.ricardo.cursomc.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ricardo.cursomc.domain.enums.Perfil;
 import com.ricardo.cursomc.domain.enums.TipoCliente;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 public class Cliente implements Serializable {
@@ -24,6 +26,11 @@ public class Cliente implements Serializable {
 
     private Integer tipo;
 
+    @JsonIgnore
+    private String senha;
+
+
+
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
     private List<Endereco> enderecos = new ArrayList<>();
 
@@ -31,20 +38,26 @@ public class Cliente implements Serializable {
     @CollectionTable(name = "TELEFONE")
     private Set<String> telefones = new HashSet<>();
 
+    @ElementCollection(fetch=FetchType.EAGER)
+    @CollectionTable(name = "PERFIS")
+    private Set<Integer> perfis = new HashSet<>();
+
     @OneToMany(mappedBy = "cliente")
     @JsonIgnore
     private List<Pedido> pedidos = new ArrayList<>();
 
     public Cliente(){
-
+      addPerfil(Perfil.CLIENTE);
     }
 
-    public Cliente(Integer id, String nome, String email, String cpfOuCnpj, TipoCliente tipo) {
+    public Cliente(Integer id, String nome, String email, String cpfOuCnpj, TipoCliente tipo, String senha) {
         this.id = id;
         this.nome = nome;
         this.email = email;
         this.cpfOuCnpj = cpfOuCnpj;
         this.tipo = (tipo==null) ? null : tipo.getCod();
+        this.senha = senha;
+        addPerfil(Perfil.CLIENTE);
     }
 
     public Integer getId() {
@@ -109,6 +122,22 @@ public class Cliente implements Serializable {
 
     public void setPedidos(List<Pedido> pedidos) {
         this.pedidos = pedidos;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
+    public Set<Perfil> getPerfils(){
+      return perfis.stream().map(x -> Perfil.toEnum(x)).collect(Collectors.toSet());
+    }
+
+    public void addPerfil(Perfil perfil){
+        this.perfis.add(perfil.getCod());
     }
 
     @Override
